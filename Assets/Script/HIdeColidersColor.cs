@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class HIdeColidersColor : MonoBehaviour
+public class HideColidersColor : MonoBehaviour
 {
     private TilemapRenderer tileRender;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
