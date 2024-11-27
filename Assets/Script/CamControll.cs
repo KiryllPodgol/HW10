@@ -2,20 +2,16 @@ using UnityEngine;
 
 public class CamControll : MonoBehaviour
 {
-  
-    [SerializeField] private Transform target; 
-    [SerializeField] private float smoothSpeed = 0.125f;
-    [SerializeField] private Vector3 offset; 
+   [SerializeField] private Transform target; 
+   [SerializeField] private float smoothSpeed; 
 
-    void LateUpdate()
+    private void Start()
     {
-        
-        if (target != null)
-        {
-            Vector3 desiredPosition = target.position + offset;
-            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
-            transform.position = smoothedPosition;
-        }
+       target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+    }
+
+    private void Update()
+    {
+        transform.position = Vector3.Lerp(transform.position, new Vector3 (transform.position.y, transform.position.z), smoothSpeed *Time.deltaTime);
     }
 }
-
