@@ -2463,6 +2463,7 @@ GameObject:
   - component: {fileID: 456400908}
   - component: {fileID: 456400909}
   - component: {fileID: 456400910}
+  - component: {fileID: 456400911}
   m_Layer: 0
   m_Name: sprite
   m_TagString: Player
@@ -2653,6 +2654,36 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &456400911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456400902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b757dafd194d3144989c6a3de653c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  staticDirections:
+  - Static N
+  - Static NW
+  - Static W
+  - Static SW
+  - Static S
+  - Static SE
+  - Static E
+  - Static NE
+  runDirections:
+  - Run N
+  - Run NW
+  - Run W
+  - Run SW
+  - Run S
+  - Run SE
+  - Run E
+  - Run NE
 --- !u!1 &458383532
 GameObject:
   m_ObjectHideFlags: 0
@@ -5488,8 +5519,8 @@ Camera:
   m_GameObject: {fileID: 1034217971}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.19335175, g: 0.745283, b: 0.40799165, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -5557,11 +5588,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 103f8080f29b31346ad4847ed6e790ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothSpeed: 0
-  minX: 0
-  maxX: 0
-  minY: 0
-  maxY: 0
+  smoothSpeed: 5
+  minX: -6.27
+  maxX: 12.96
+  minY: -3.37
+  maxY: 4.24
 --- !u!1 &1097012562
 GameObject:
   m_ObjectHideFlags: 0
