@@ -1,42 +1,34 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 namespace Script
 {
     public class CharacterMove : MonoBehaviour
     {
-        [SerializeField] private float speed = 5;
-        [SerializeField] private Transform movePoint;
-        [SerializeField] private LayerMask obstacleMask;
+        private PlayerAnimation playerAnimation;
+        private Rigidbody2D rb;
 
-        void Start()
+        [SerializeField] private float moveSpeed = 1.0f;
+
+        private void Awake()
         {
-            movePoint.parent = null;
+            rb = GetComponent<Rigidbody2D>();
+            playerAnimation = GetComponent<PlayerAnimation>();
         }
 
-        void Update()
+        private void FixedUpdate()
         {
-            float movementAmout = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, movePoint.position, movementAmout);
+            Vector2 currentPos = rb.position;
+            float moveH = Input.GetAxis("Horizontal") * moveSpeed;
+            float moveV = Input.GetAxis("Vertical") * moveSpeed;
+            Vector2 inputVector = new Vector2(moveH, moveV);
 
-            if (Vector3.Distance(transform.position, movePoint.position) <= 0.05f)
-            {
-                if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
-                {
-                    Move(new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0));
-                }
-                else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
-                {
-                    Move(new Vector3(0, Input.GetAxisRaw("Vertical"), 0));
-                }
-            }
-        }
-        private void Move(Vector3 direction)
-        {
-            Vector3 newPosition = movePoint.position + direction;
-            if (!Physics2D.OverlapCircle(newPosition, 0.2f, obstacleMask))
-            {
-                movePoint.position = newPosition;
-            }
+            inputVector = Vector2.ClampMagnitude(inputVector, 1);
+            Vector2 movement = inputVector * moveSpeed;
+            Vector2 newPos = currentPos + movement * Time.fixedDeltaTime;
+
+            rb.MovePosition(newPos);
+            playerAnimation.SetDirection(inputVector);
         }
     }
 }
