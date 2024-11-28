@@ -12,6 +12,7 @@ namespace Script
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
+            PlayerAnimation playerAnimation = rb.GetComponent<PlayerAnimation>();
         }
         private void FixedUpdate()
         {
