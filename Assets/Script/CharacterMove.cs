@@ -8,12 +8,14 @@ namespace Script
         private Rigidbody2D rb;
         private float moveH, moveV;
         [SerializeField] private float moveSpeed = 1.0f;
+        private PlayerAnimation playerAnimation;
 
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
-            PlayerAnimation playerAnimation = rb.GetComponent<PlayerAnimation>();
+            playerAnimation = GetComponent<PlayerAnimation>();
         }
+
         private void FixedUpdate()
         {
             moveH = Input.GetAxis("Horizontal") * moveSpeed;
@@ -21,16 +23,7 @@ namespace Script
             rb.linearVelocity = new Vector2(moveH, moveV);
 
             Vector2 direction = new Vector2(moveH, moveV);
-
-            PlayerAnimation playerAnimation = FindObjectOfType<PlayerAnimation>();
-            if (playerAnimation != null)
-            {
-                playerAnimation.SetDirection(direction);
-            }
-            else
-            {
-                Debug.LogError("PlayerAnimation component not found in the scene.");
-            }
+            playerAnimation.SetDirection(direction);
         }
     }
 }
