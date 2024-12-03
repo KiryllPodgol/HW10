@@ -7,8 +7,11 @@ namespace Script
     {
         private Rigidbody2D rb;
         private InputAsset input;
-        private Vector3 _direction;
+        private Vector2 _direction;
         private PlayerAnimation playerAnimation;
+
+        [SerializeField] private Grid terrainCells; 
+        [SerializeField] private float speed = 5.0f;
 
         private void Awake()
         {
@@ -19,23 +22,29 @@ namespace Script
 
         private void Start()
         {
-            input.Gameplay.Move.performed += Move_performed; // ���������� performed
+            input.Gameplay.Move.performed += Move_performed; 
+            input.Gameplay.Move.canceled += Move_canceled; 
             input.Enable();
         }
 
         private void OnDestroy()
         {
-            input.Gameplay.Move.performed -= Move_performed;
+            input.Gameplay.Move.performed -= Move_performed; 
+            input.Gameplay.Move.canceled -= Move_canceled; 
             input.Disable();
         }
 
         private void Move_performed(InputAction.CallbackContext obj)
         {
-            Vector2 readVector = obj.ReadValue<Vector2>();
-            Vector3 toConvert = new Vector3(readVector.x, 0, readVector.y);
-            _direction = IsoVectorConvert(toConvert);
+            _direction = obj.ReadValue<Vector2>();
+            if (_direction.magnitude > 1) _direction.Normalize();
+            playerAnimation.SetDirection(_direction); 
+        }
 
-            playerAnimation.SetDirection(new Vector2(_direction.x, _direction.z));
+        private void Move_canceled(InputAction.CallbackContext obj)
+        {
+            _direction = Vector2.zero; 
+            playerAnimation.SetDirection(Vector2.zero); 
         }
 
         private void FixedUpdate()
@@ -45,15 +54,16 @@ namespace Script
 
         private void MoveCharacter()
         {
-            rb.MovePosition(rb.position + new Vector2(_direction.x, _direction.z) * Time.fixedDeltaTime);
-        }
-
-        private Vector3 IsoVectorConvert(Vector3 vector)
-        {
-            Quaternion rotation = Quaternion.Euler(0, 45.0f, 0);
-            Matrix4x4 isoMatrix = Matrix4x4.Rotate(rotation);
-            Vector3 result = isoMatrix.MultiplyPoint3x4(vector);
-            return result;
+            Vector3 cellSize = terrainCells.cellSize;
+            
+            // Учитываем соотношение сторон клетки при движении
+            Vector2 adjustedDirection = new Vector2(_direction.x, _direction.y * (cellSize.y / cellSize.x));
+            
+            // Рассчитываем новое движение
+            Vector2 movement = adjustedDirection * speed * Time.fixedDeltaTime;
+            rb.MovePosition(rb.position + movement);
+            Vector3Int cellPosition = terrainCells.WorldToCell(rb.position);
+       
         }
     }
 }
