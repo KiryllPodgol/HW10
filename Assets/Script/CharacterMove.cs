@@ -56,10 +56,10 @@ namespace Script
         {
             Vector3 cellSize = terrainCells.cellSize;
             
-            // Учитываем соотношение сторон клетки при движении
+            // соотношение сторон клетки при движении
             Vector2 adjustedDirection = new Vector2(_direction.x, _direction.y * (cellSize.y / cellSize.x));
             
-            // Рассчитываем новое движение
+            // Рассчитываем движение
             Vector2 movement = adjustedDirection * speed * Time.fixedDeltaTime;
             rb.MovePosition(rb.position + movement);
             Vector3Int cellPosition = terrainCells.WorldToCell(rb.position);
